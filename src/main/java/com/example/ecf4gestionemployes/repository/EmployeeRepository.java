@@ -119,16 +119,43 @@ public class EmployeeRepository extends BaseRepository<Employee> {
         return employees;
     }
 
-    // get all employees by department
-    public List<Employee> findAllByDepartment(Long id) {
+
+    public List<Employee> findAllByDepartment(String name) {
         Transaction transaction = null;
         List<Employee> employees = null;
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            Query<Employee> query = session.createQuery("from Employee where department_id = :id", Employee.class);
-            query.setParameter("id", id);
+            Query<Employee> query = session.createQuery("SELECT e FROM Employee e WHERE e.department.name = :name", Employee.class);
+            query.setParameter("name", name);
             employees = query.getResultList();
+            for (Employee employee : employees) {
+                Hibernate.initialize(employee.getDepartment().getEmployees());
+            }
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return employees;
+    }
+
+    public List<Employee> findAllByPosition(String title) {
+        Transaction transaction = null;
+        List<Employee> employees = null;
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            Query<Employee> query = session.createQuery("SELECT e FROM Employee e WHERE e.position.title = :title", Employee.class);
+            query.setParameter("title", title);
+            employees = query.getResultList();
+            for (Employee employee : employees) {
+                Hibernate.initialize(employee.getPosition().getEmployees());
+            }
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

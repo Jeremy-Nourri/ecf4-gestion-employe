@@ -1,6 +1,5 @@
 package com.example.ecf4gestionemployes.repository;
 
-import com.example.ecf4gestionemployes.model.Employee;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;

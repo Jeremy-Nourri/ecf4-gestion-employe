@@ -1,6 +1,5 @@
 package com.example.ecf4gestionemployes.repository;
 
-import com.example.ecf4gestionemployes.exception.DepartmentNotFoundException;
 import com.example.ecf4gestionemployes.model.Department;
 
 import org.hibernate.query.Query;

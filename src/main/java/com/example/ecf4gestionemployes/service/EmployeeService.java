@@ -6,6 +6,7 @@ import com.example.ecf4gestionemployes.repository.EmployeeRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.List;
+import java.util.Locale;
 
 @ApplicationScoped
 public class EmployeeService {
@@ -44,6 +45,15 @@ public class EmployeeService {
 
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
+    }
+
+    public List<Employee> getEmployeesByDepartment(String name) {
+
+        return employeeRepository.findAllByDepartment(name.toLowerCase());
+    }
+
+    public List<Employee> getEmployeesByPosition(String name) {
+        return employeeRepository.findAllByPosition(name.toLowerCase());
     }
 
 

@@ -1,5 +1,6 @@
 package com.example.ecf4gestionemployes.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public class Department {
     private String name;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.REMOVE)
+    @JsonManagedReference("department-employee")
     private List<Employee> employees;
 
 

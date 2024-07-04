@@ -15,6 +15,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
+import java.util.Locale;
 
 @Path("/employees")
 @Produces(MediaType.APPLICATION_JSON)
@@ -47,12 +48,13 @@ public class EmployeeResource {
 
     @POST
     @Path("/create")
-    public Response createEmployee(Employee employee) {
+    public Employee createEmployee(Employee employee) {
         try {
         Department department = null;
         Position position = null;
         department = departmentService.getDepartmentById(employee.getDepartment().getId());
-        if (department == null) {
+        employee.getDepartment().setName(employee.getDepartment().getName().toLowerCase());
+            if (department == null) {
             department = departmentService.saveDepartment(employee.getDepartment());
         }
         employee.setDepartment(department);
@@ -65,15 +67,10 @@ public class EmployeeResource {
 
         employeeService.saveEmployee(employee);
 
-        return Response.status(Response.Status.CREATED)
-                .entity(employee)
-                .build();
+        return employee;
         } catch (Exception e) {
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                .entity("Error creating employee: " + e.getMessage())
-                .build();
-    }
-
+            throw new RuntimeException("Error creating employee");
+        }
     }
 
     @PUT
@@ -92,6 +89,19 @@ public class EmployeeResource {
             return "Employee with id " + id + " not found";
         }
     }
+
+    @GET
+    @Path("/department/{name}")
+    public List<Employee> getEmployeesByDepartment(@PathParam("name") String name) {
+        return employeeService.getEmployeesByDepartment(name.toLowerCase());
+    }
+
+    @GET
+    @Path("/position/{title}")
+    public List<Employee> getEmployeesByPosition(@PathParam("title") String title) {
+        return employeeService.getEmployeesByPosition(title.toLowerCase());
+    }
+
 
 
 }

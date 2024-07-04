@@ -1,9 +1,9 @@
 package com.example.ecf4gestionemployes.model;
 
 import com.example.ecf4gestionemployes.utils.Views;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Fetch;
 
 @Entity
 public class Employee {
@@ -28,11 +28,13 @@ public class Employee {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     @JsonView(Views.Internal.class)
+    @JsonBackReference("department-employee")
     private Department department;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "position_id")
     @JsonView(Views.Internal.class)
+    @JsonBackReference("position-employee")
     private Position position;
 
 
