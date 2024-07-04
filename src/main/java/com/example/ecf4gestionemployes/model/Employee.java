@@ -1,24 +1,38 @@
 package com.example.ecf4gestionemployes.model;
 
+import com.example.ecf4gestionemployes.utils.Views;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
 
 @Entity
 public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(Views.Public.class)
     private Long id;
+
+    @JsonView(Views.Public.class)
     private String firstName;
+
+    @JsonView(Views.Public.class)
     private String lastName;
+
+    @JsonView(Views.Public.class)
     private String email;
+
+    @JsonView(Views.Public.class)
     private String phone;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
+    @JsonView(Views.Internal.class)
     private Department department;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "position_id")
+    @JsonView(Views.Internal.class)
     private Position position;
 
 
@@ -36,6 +50,10 @@ public class Employee {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -62,4 +80,11 @@ public class Employee {
         return position;
     }
 
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
 }

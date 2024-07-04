@@ -1,4 +1,4 @@
-package com.example.ecf4gestionemployes;
+package com.example.ecf4gestionemployes.rest;
 
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;

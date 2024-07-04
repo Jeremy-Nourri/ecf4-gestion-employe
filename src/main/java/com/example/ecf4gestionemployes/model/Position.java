@@ -12,7 +12,7 @@ public class Position {
     private long id;
     private String title;
 
-    @OneToMany(mappedBy = "position")
+    @OneToMany(mappedBy = "position", cascade = CascadeType.REMOVE)
     private List<Employee> employees;
 
     public Position(String title) {
@@ -20,7 +20,6 @@ public class Position {
     }
 
     public Position() {
-
     }
 
     public long getId() {
@@ -38,4 +37,6 @@ public class Position {
     public void setTitle(String title) {
         this.title = title;
     }
+
+
 }

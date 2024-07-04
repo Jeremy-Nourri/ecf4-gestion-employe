@@ -9,23 +9,23 @@ public class Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String name;
 
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department", cascade = CascadeType.REMOVE)
     private List<Employee> employees;
 
 
     public Department() {
     }
 
-    public Department(int id, String name, String description) {
+    public Department(Long id, String name, String description) {
         this.id = id;
         this.name = name;
 
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -33,7 +33,7 @@ public class Department {
         return name;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
