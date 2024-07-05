@@ -113,5 +113,26 @@ public class DepartmentRepository extends BaseRepository<Department> {
         }
         return result;
     }
+
+    public Department findByName(String name) {
+        Transaction transaction = null;
+        Department department = null;
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            Query<Department> query = session.createQuery("from Department where name = :name", Department.class);
+            query.setParameter("name", name);
+            department = query.getSingleResult();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return department;
+    }
 }
 

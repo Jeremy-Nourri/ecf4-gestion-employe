@@ -49,17 +49,16 @@ public class EmployeeResource {
     @POST
     @Path("/create")
     public Employee createEmployee(Employee employee) {
+
         try {
-        Department department = null;
-        Position position = null;
-        department = departmentService.getDepartmentById(employee.getDepartment().getId());
-        employee.getDepartment().setName(employee.getDepartment().getName().toLowerCase());
-            if (department == null) {
+
+        Department department = departmentService.getDepartmentByName(employee.getDepartment().getName().toLowerCase());
+        if (department == null) {
             department = departmentService.saveDepartment(employee.getDepartment());
         }
         employee.setDepartment(department);
 
-        position = positionService.getPositionById(employee.getPosition().getId());
+        Position position = positionService.getPositionByTitle(employee.getPosition().getTitle().toLowerCase());
         if (position == null) {
             position = positionService.savePosition(employee.getPosition());
         }
@@ -100,6 +99,12 @@ public class EmployeeResource {
     @Path("/position/{title}")
     public List<Employee> getEmployeesByPosition(@PathParam("title") String title) {
         return employeeService.getEmployeesByPosition(title.toLowerCase());
+    }
+
+    @GET
+    @Path("/search/{lastName}_{firstName}")
+    public List<Employee> searchEmployeeByFirstNameAndLastName(@PathParam("firstName") String firstName, @PathParam("lastName") String lastName) {
+        return employeeService.getEmployeesByFirstNameAndLastName(firstName.toLowerCase(), lastName.toLowerCase());
     }
 
 

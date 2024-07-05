@@ -25,6 +25,10 @@ public class DepartmentService {
         return departmentRepository.findById(id);
     }
 
+    public Department getDepartmentByName(String name) {
+        return departmentRepository.findByName(name);
+    }
+
     public void updateDepartment(Department department) {
         departmentRepository.update(department);
     }

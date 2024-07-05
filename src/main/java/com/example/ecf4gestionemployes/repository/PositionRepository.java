@@ -114,5 +114,25 @@ public class PositionRepository extends BaseRepository<Position> {
         return positions;
     }
 
+    public Position findByTitle(String title) {
+        Transaction transaction = null;
+        Position position = null;
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            Query<Position> query = session.createQuery("from Position where title = :title", Position.class);
+            query.setParameter("title", title);
+            position = query.getSingleResult();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return position;
+    }
 
 }

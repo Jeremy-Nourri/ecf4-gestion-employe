@@ -56,5 +56,9 @@ public class EmployeeService {
         return employeeRepository.findAllByPosition(name.toLowerCase());
     }
 
+    public List<Employee> getEmployeesByFirstNameAndLastName(String firstName, String lastName) {
+        return employeeRepository.searchEmployeeByFirstNameAndLastName(firstName.toLowerCase(), lastName.toLowerCase());
+    }
+
 
 }

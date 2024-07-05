@@ -167,4 +167,30 @@ public class EmployeeRepository extends BaseRepository<Employee> {
         }
         return employees;
     }
+
+    public List<Employee> searchEmployeeByFirstNameAndLastName(String firstName, String lastName) {
+        Transaction transaction = null;
+        List<Employee> employees = null;
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            Query<Employee> query = session.createQuery("SELECT e FROM Employee e WHERE e.firstName = :firstName AND e.lastName = :lastName", Employee.class);
+            query.setParameter("firstName", firstName);
+            query.setParameter("lastName", lastName);
+            employees = query.getResultList();
+//            for (Employee employee : employees) {
+//                Hibernate.initialize(employee.getDepartment().getEmployees());
+//                Hibernate.initialize(employee.getPosition().getEmployees());
+//            }
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return employees;
+    }
 }

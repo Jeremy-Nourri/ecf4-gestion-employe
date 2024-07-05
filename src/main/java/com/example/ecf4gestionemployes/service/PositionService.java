@@ -24,6 +24,10 @@ public class PositionService {
         return positionRepository.findById(id);
     }
 
+    public Position getPositionByTitle(String title) {
+        return positionRepository.findByTitle(title);
+    }
+
     public void updatePosition(Position position) {
         positionRepository.update(position);
     }
