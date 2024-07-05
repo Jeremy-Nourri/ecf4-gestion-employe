@@ -30,6 +30,11 @@ public class EmployeeResource {
     private PositionService positionService;
 
     @GET
+    public String getEmployees() {
+        return "Bienvenue sur l'API de gestion des employés";
+    }
+
+    @GET
     @Path("/{id}")
     public Employee getEmployeeById(@PathParam("id") Long id) {
         Employee employee = employeeService.getEmployeeById(id);
@@ -73,14 +78,37 @@ public class EmployeeResource {
     }
 
     @PUT
-    @Path("/{id}")
-    public void updateEmployee(@PathParam("id") Long id, Employee employee) {
-        employee.setId(id);
-        employeeService.updateEmployee(employee);
+    @Path("/update/{id}")
+    public Employee updateEmployee(@PathParam("id") Long id, Employee employee) {
+        Employee employeeToUpdate = employeeService.getEmployeeById(id);
+
+        try {
+            Department department = departmentService.getDepartmentByName(employee.getDepartment().getName().toLowerCase());
+            if (department == null) {
+                department = departmentService.saveDepartment(employee.getDepartment());
+            }
+            employeeToUpdate.setDepartment(department);
+
+            Position position = positionService.getPositionByTitle(employee.getPosition().getTitle().toLowerCase());
+            if (position == null) {
+                position = positionService.savePosition(employee.getPosition());
+            }
+            employeeToUpdate.setPosition(position);
+
+            employeeToUpdate.setFirstName(employee.getFirstName());
+            employeeToUpdate.setLastName(employee.getLastName());
+            employeeToUpdate.setEmail(employee.getEmail());
+            employeeToUpdate.setPhone(employee.getPhone());
+
+            return employeeService.updateEmployee(employeeToUpdate);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error updating employee");
+        }
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("/delete/{id}")
     public String deleteEmployee(@PathParam("id") Long id) {
         if (employeeService.deleteEmployee(id)) {
             return "Employee with id " + id + " deleted";

@@ -178,10 +178,6 @@ public class EmployeeRepository extends BaseRepository<Employee> {
             query.setParameter("firstName", firstName);
             query.setParameter("lastName", lastName);
             employees = query.getResultList();
-//            for (Employee employee : employees) {
-//                Hibernate.initialize(employee.getDepartment().getEmployees());
-//                Hibernate.initialize(employee.getPosition().getEmployees());
-//            }
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
